@@ -1,7 +1,7 @@
 #!/bin/bash
 BUILD_DIR=$1
-TESSERACT_OCR_VERSION=5.0
-TESSERACT_OCR_TGZ=tesseract-5.0.0-alpha-20201231.tar.gz
+TESSERACT_OCR_VERSION=4.0
+TESSERACT_OCR_TGZ=tesseract-ocr-$TESSERACT_OCR_VERSION.tar.gz
 
 INSTALL_DIR=$BUILD_DIR/vendor/tesseract-ocr/
 TESSERACT_OCR_DIR=${HOME}/vendor/tesseract-ocr
@@ -17,4 +17,4 @@ echo "Building runtime environment for Tesseract-OCR"
 mkdir -p $BUILD_DIR/.profile.d
 echo "export PATH=\"$TESSERACT_OCR_DIR/bin:\$PATH\"" > $ENVSCRIPT
 echo "export LD_LIBRARY_PATH=\"$TESSERACT_OCR_DIR/lib:\$LD_LIBRARY_PATH\"" >> $ENVSCRIPT
-echo "export TESSDATA_PREFIX=\"$TESSERACT_OCR_DIR/share/tessdata\"" >> $ENVSCRIPT
+echo "export TESSDATA_PREFIX=\"./.apt/usr/share/tesseract-ocr/4.00/tessdata"" >> $ENVSCRIPT
