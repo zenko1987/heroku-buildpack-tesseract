@@ -1,14 +1,15 @@
 #!/bin/bash
 BUILD_DIR=$1
 TESSERACT_OCR_VERSION=4.0
+TESSERACT_OCR_DATA_VERSION=4.0
 
-TESSDATA_TGZ=tessdata.tar.gz
 TESSERACT_OCR_TGZ=tesseract-ocr-$TESSERACT_OCR_VERSION.tar.gz
 
 INSTALL_DIR=$BUILD_DIR/vendor/tesseract-ocr/
+INSTALL_DIR_TRAINING_DATA=$BUILD_DIR/vendor/
 TESSERACT_OCR_DIR=${HOME}/vendor/tesseract-ocr
 ENVSCRIPT=$BUILD_DIR/.profile.d/tesseract-ocr.sh
-TESSDATA_PREFIX=${HOME}/vendor/tesseract-ocr/share/tessdata
+
 TESSERACT_OCR_LANGUAGES=eng,jpn,jpn_vert,kor,chi_sim,chi_tra,fra,deu
 
 echo "Unpacking Tesseract-OCR binaries"
@@ -16,9 +17,6 @@ mkdir -p $INSTALL_DIR
 tar -zxvf $TESSERACT_OCR_TGZ -C $INSTALL_DIR
 
 echo 'Getting Tesseract-OCR training data'
-mkdir -p $TESSDATA_PREFIX
-tar -zxvf $TESSDATA_TGZ -C $TESSDATA_PREFIX
-
 if [ $TESSERACT_OCR_LANGUAGES ]
 then
    array=(${TESSERACT_OCR_LANGUAGES//,/ })
@@ -26,18 +24,15 @@ then
    do
      lang="${array[i]}"
      echo $lang 'training data'
-     # cd ${HOME}/vendor/tesseract-ocr
-     # git clone https://github.com/tesseract-ocr/tessdata.git
+     curl https://github.com/tesseract-ocr/tessdata/raw/master/$lang.traineddata \
+  -o - | tar -xz -C $INSTALL_DIR_TRAINING_DATA -f -
 
    done
 fi
-
-
-
-echo "traineddata files loaded " && ls $TESSDATA_PREFIX
 
 echo "Building runtime environment for Tesseract-OCR"
 mkdir -p $BUILD_DIR/.profile.d
 echo "export PATH=\"$TESSERACT_OCR_DIR/bin:\$PATH\"" > $ENVSCRIPT
 echo "export LD_LIBRARY_PATH=\"$TESSERACT_OCR_DIR/lib:\$LD_LIBRARY_PATH\"" >> $ENVSCRIPT
-echo "export TESSDATA_PREFIX=\"$TESSDATA_PREFIX/\"" >> $ENVSCRIPT
+echo "export TESSDATA_PREFIX=\"$TESSERACT_OCR_DIR/\"" >> $ENVSCRIPT
+
