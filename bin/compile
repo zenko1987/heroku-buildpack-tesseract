@@ -14,10 +14,10 @@ echo "Unpacking Tesseract-OCR binaries"
 mkdir -p $INSTALL_DIR
 tar -zxvf $TESSERACT_OCR_TGZ -C $INSTALL_DIR
 
-wget https://github.com/tesseract-ocr/tessdata/raw/master/jpn.traineddata
-wget https://github.com/tesseract-ocr/tessdata/raw/master/jpn_vert.traineddata
-wget https://github.com/tesseract-ocr/tessdata/raw/master/fra.traineddata
-wget https://github.com/tesseract-ocr/tessdata/raw/master/deu.traineddata
+wget https://github.com/tesseract-ocr/tessdata/raw/master/jpn.traineddata -C $INSTALL_DIR_TRAINING_DATA
+wget https://github.com/tesseract-ocr/tessdata/raw/master/jpn_vert.traineddata -C $INSTALL_DIR_TRAINING_DATA
+wget https://github.com/tesseract-ocr/tessdata/raw/master/fra.traineddata -C $INSTALL_DIR_TRAINING_DATA
+wget https://github.com/tesseract-ocr/tessdata/raw/master/deu.traineddata -C $INSTALL_DIR_TRAINING_DATA
 
 
 echo "Building runtime environment for Tesseract-OCR"
